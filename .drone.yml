@@ -27,6 +27,9 @@ pipeline:
 services:
     postgresql:
         image: postgres
+        environment:
+            - POSTGRES_HOST_AUTH_METHOD=trust
+        command: "-c fsync=off -c synchronous_commit=off -c full_page_writes=off"
         when:
             matrix:
                 DATABASE: postgresql
@@ -50,4 +53,10 @@ matrix:
           DATABASE: sqlite
         - IMAGE: python:3.7
           TOXENV: py37
+          DATABASE: postgresql
+        - IMAGE: python:3.8
+          TOXENV: py38
+          DATABASE: sqlite
+        - IMAGE: python:3.8
+          TOXENV: py38
           DATABASE: postgresql
